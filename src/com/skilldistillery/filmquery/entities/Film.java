@@ -120,16 +120,18 @@ public class Film {
 		this.specialFeatures = specialFeatures;
 	}
 
+
+
+	
+
+
 	@Override
 	public String toString() {
 		return "Film [ID=" + ID + ", title=" + title + ", description=" + description + ", releaseYear=" + releaseYear
 				+ ", languageID=" + languageID + ", rentalDuration=" + rentalDuration + ", rentalRate=" + rentalRate
 				+ ", length=" + length + ", replacementCost=" + replacementCost + ", rating=" + rating
-				+ ", specialFeatures=" + specialFeatures + "]";
+				+ ", specialFeatures=" + specialFeatures;
 	}
-
-	
-
 
 	public Film(int iD, String title, String description, Integer releaseYear, int languageID, int rentalDuration,
 			int rentalRate, Integer length, double replacementCost, String rating, String specialFeatures,

@@ -35,7 +35,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			ps.setInt(1, filmId);
 			ResultSet rs = ps.executeQuery();
 
-			if (rs.next()) {
+			while (rs.next()) {
 				film = new Film();
 				film.setID(rs.getInt("f.id"));
 				film.setTitle(rs.getString("f.title"));
@@ -48,16 +48,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setReplacementCost(rs.getDouble("f.replacement_cost"));
 				film.setRating(rs.getString("f.rating"));
 				film.setSpecialFeatures(rs.getString("f.special_features"));
+				film.setActorsInFilm(findActorsByFilmId(filmId));
 				
-				List<Actor> actors = new ArrayList();
-				Actor a = new Actor();
-				a.setID(rs.getInt("a.id"));
-				a.setFirstName(rs.getString("a.first_name"));
-				a.setLastName(rs.getString("a.last_name"));
-				actors.add(a);
-				
-				film.setActorsInFilm(actors);
-			}
+				}
 			rs.close();
 			ps.close();
 			conn.close();
@@ -100,7 +93,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		List<Actor> actors = new ArrayList<>();
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
-			String sql = "SELECT a.first_name, a.last_name, f.id " + "FROM film_actor fa "
+			String sql = "SELECT a.id, a.first_name, a.last_name, f.id " + "FROM film_actor fa "
 					+ "JOIN actor a ON a.id = fa.actor_id " + "JOIN film f ON f.id = fa.film_id " + "WHERE f.id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, filmId);
@@ -108,9 +101,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 			while (rs.next()) {
 				Actor actor = new Actor();
-				actor.setID(rs.getInt("id"));
-				actor.setFirstName(rs.getString("first_name"));
-				actor.setLastName(rs.getString("last_name"));
+				actor.setID(rs.getInt("a.id"));
+				actor.setFirstName(rs.getString("a.first_name"));
+				actor.setLastName(rs.getString("a.last_name"));
 				actors.add(actor);
 			}
 			rs.close();
