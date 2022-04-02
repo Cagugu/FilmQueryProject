@@ -1,6 +1,5 @@
 package com.skilldistillery.filmquery.app;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,20 +14,8 @@ public class FilmQueryApp {
 
 	public static void main(String[] args) {
 		FilmQueryApp app = new FilmQueryApp();
-//    app.test();
 		app.launch();
 	}
-
-//  private void test() {
-//    Film film = db.findFilmById(1);
-//    System.out.println(film);
-// 
-////    List<Actor>  actors = db.findActorsByFilmId(1);
-////    for (int i = 0; i < actors.size(); i++) {
-////		
-////    	System.out.println(actors.get(i));
-////	}
-//  }
 
 	private void launch() {
 		Scanner input = new Scanner(System.in);
@@ -70,8 +57,8 @@ public class FilmQueryApp {
 					System.out.println();
 				} else {
 					Film film = db.findFilmById(filmID);
-					System.out.println(film.getTitle() + " "+ film.getReleaseYear() + " "+ film.getRating()
-					+ " " +  film.getDescription() + " Language: " + film.getLanguage());
+					System.out.println(film.getTitle() + " " + film.getReleaseYear() + " " + film.getRating() + " "
+							+ film.getDescription() + " Language: " + film.getLanguage());
 					List<Actor> actors = film.getActorsInFilm();
 					for (Actor actor : actors) {
 						System.out.println(actor);
@@ -89,9 +76,10 @@ public class FilmQueryApp {
 					System.out.println("You can try again with a different keyword.");
 					System.out.println();
 				} else {
+					
 					for (Film film : filmMatch) {
-						System.out.println(film.getTitle() + " "+ film.getReleaseYear() + " "+ film.getRating()
-						+ " " +  film.getDescription()+ " Language: " + film.getLanguage());
+						System.out.println(film.getTitle() + " " + film.getReleaseYear() + " " + film.getRating() + " "
+								+ film.getDescription() + " Language: " + film.getLanguage());
 						List<Actor> actors = film.getActorsInFilm();
 						for (Actor actor : actors) {
 							System.out.println(actor);
