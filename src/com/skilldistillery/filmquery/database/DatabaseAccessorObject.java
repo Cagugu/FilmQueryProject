@@ -124,4 +124,50 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			throw new RuntimeException("**Unable to load MySQL Driver class");
 		}
 	}
+
+	@Override
+	public List<Film> findFilmByKeyword(String keyword) {
+		Film film = null;
+		List<Film> filmMatch = new ArrayList<>();
+		try {
+			Connection conn = DriverManager.getConnection(URL, user, pass);
+			String sql = "SELECT f.id, f.title, f.description, f.release_year, f.language_id, "
+					+ "f.rental_duration, f.rental_rate, f.length, f.replacement_cost, "
+					+ "f.rating, f.special_features "
+					+"FROM film f "
+//					+ "JOIN film f ON f.id = fa.film_id "
+					+ "WHERE f.description LIKE ? OR f.title LIKE ?";
+					
+					
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, "%" + keyword + "%");
+			ps.setString(2, "%" + keyword + "%");
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				film = new Film();
+				film.setID(rs.getInt("f.id"));
+				film.setTitle(rs.getString("f.title"));
+				film.setDescription(rs.getString("f.description"));
+				film.setReleaseYear(rs.getInt("f.release_year"));
+				film.setLanguageID(rs.getInt("f.language_id"));
+				film.setRentalDuration(rs.getInt("f.rental_duration"));
+				film.setRentalRate(rs.getInt("f.rental_rate"));
+				film.setLength(rs.getInt("f.length"));
+				film.setReplacementCost(rs.getDouble("f.replacement_cost"));
+				film.setRating(rs.getString("f.rating"));
+				film.setSpecialFeatures(rs.getString("f.special_features"));
+//				film.setActorsInFilm(findActorsByFilmId(film.getID()));
+				
+				filmMatch.add(film);
+				
+				}
+			rs.close();
+			ps.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return filmMatch;
+	}
 }
