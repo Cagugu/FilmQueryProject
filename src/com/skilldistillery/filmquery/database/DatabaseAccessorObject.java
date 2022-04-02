@@ -49,6 +49,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setRating(rs.getString("f.rating"));
 				film.setSpecialFeatures(rs.getString("f.special_features"));
 				film.setActorsInFilm(findActorsByFilmId(filmId));
+				film.setLanguage(findLanguageFromFilm(filmId));
 				
 				}
 			rs.close();
@@ -135,7 +136,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 					+ "f.rental_duration, f.rental_rate, f.length, f.replacement_cost, "
 					+ "f.rating, f.special_features "
 					+"FROM film f "
-//					+ "JOIN film f ON f.id = fa.film_id "
 					+ "WHERE f.description LIKE ? OR f.title LIKE ?";
 					
 					
@@ -157,8 +157,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setReplacementCost(rs.getDouble("f.replacement_cost"));
 				film.setRating(rs.getString("f.rating"));
 				film.setSpecialFeatures(rs.getString("f.special_features"));
-//				film.setActorsInFilm(findActorsByFilmId(film.getID()));
-				
+				film.setActorsInFilm(findActorsByFilmId(film.getID()));
+				film.setLanguage(findLanguageFromFilm(film.getID()));
 				filmMatch.add(film);
 				
 				}
@@ -170,4 +170,28 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		}
 		return filmMatch;
 	}
+	
+	private String findLanguageFromFilm(int filmId) {
+		String language = "";
+		try {
+			Connection conn = DriverManager.getConnection(URL, user, pass);
+			String sql = "SELECT l.name FROM language l JOIN film f ON l.id = f.language_id WHERE f.id = ? ";
+					
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, filmId);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				language = rs.getString("l.name");
+				
+				}
+			rs.close();
+			ps.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return language;
+	}
+	
 }

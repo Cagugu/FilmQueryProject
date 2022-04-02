@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import com.skilldistillery.filmquery.database.DatabaseAccessor;
 import com.skilldistillery.filmquery.database.DatabaseAccessorObject;
+import com.skilldistillery.filmquery.entities.Actor;
 import com.skilldistillery.filmquery.entities.Film;
 
 public class FilmQueryApp {
@@ -68,7 +69,13 @@ public class FilmQueryApp {
 					System.out.println("No film matching input id.");
 					System.out.println();
 				} else {
-					System.out.println(db.findFilmById(filmID));
+					Film film = db.findFilmById(filmID);
+					System.out.println(film.getTitle() + " "+ film.getReleaseYear() + " "+ film.getRating()
+					+ " " +  film.getDescription() + " Language: " + film.getLanguage());
+					List<Actor> actors = film.getActorsInFilm();
+					for (Actor actor : actors) {
+						System.out.println(actor);
+					}
 					System.out.println();
 				}
 			}
@@ -83,7 +90,12 @@ public class FilmQueryApp {
 					System.out.println();
 				} else {
 					for (Film film : filmMatch) {
-						System.out.println(film);
+						System.out.println(film.getTitle() + " "+ film.getReleaseYear() + " "+ film.getRating()
+						+ " " +  film.getDescription()+ " Language: " + film.getLanguage());
+						List<Actor> actors = film.getActorsInFilm();
+						for (Actor actor : actors) {
+							System.out.println(actor);
+						}
 						System.out.println();
 					}
 				}
